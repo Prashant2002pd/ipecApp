@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import {SERVER_API} from "@env";
 
 const {
   View,
@@ -21,14 +22,19 @@ function Login({ navigation }) {
   }
 
   function handlepress() {
+    console.log(SERVER_API)
     if (!data.email || !data.password) {
       alert("Please enter all data");
       return;
     }
-    axios.post("http://localhost:3000/api/login", data).then((res) => {
-      console.log(res.data);
+    axios.post(`${SERVER_API}/login`,{"email":data.email,"password":data.password})
+    .then(res=>{
+      // console.log(res)
+      navigation.navigate("Home");
+    })
+    .catch(err=>{
+      console.log(err)
     });
-    // navigation.navigate("Signup");
   }
 
   return (

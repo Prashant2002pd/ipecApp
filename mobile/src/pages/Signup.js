@@ -1,4 +1,6 @@
+import axios from "axios";
 import { useState } from "react";
+import {SERVER_API} from "@env";
 
 const {
   View,
@@ -22,6 +24,7 @@ function Signup({ navigation }) {
   }
 
   function handlepress() {
+    // console.log(SERVER_API)
     if (
       !data.username ||
       !data.email ||
@@ -32,7 +35,14 @@ function Signup({ navigation }) {
       return;
     }
     if (data.password === data.confirmPassword) {
-      navigation.navigate("Login");
+      axios.post(`${SERVER_API}/signup`,{"username":data.username,"email":data.email,"password":data.password})
+      .then(res=>{
+        console.log(res)
+        navigation.navigate("Login");
+      })
+      .catch(err=>{
+        console.error(err)
+      })
     } else {
       alert("Passwords do not match");
     }
