@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
-import {SERVER_API} from "@env";
+import { SERVER_API } from "@env";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const {
   View,
@@ -22,19 +23,24 @@ function Login({ navigation }) {
   }
 
   function handlepress() {
-    console.log(SERVER_API)
+    console.log(SERVER_API);
     if (!data.email || !data.password) {
       alert("Please enter all data");
       return;
     }
-    axios.post(`${SERVER_API}/login`,{"email":data.email,"password":data.password})
-    .then(res=>{
-      // console.log(res)
-      navigation.navigate("Home");
-    })
-    .catch(err=>{
-      console.log(err)
-    });
+    axios
+      .post(`${SERVER_API}/login`, {
+        email: data.email,
+        password: data.password,
+      })
+      .then(async (res) => {
+        await AsyncStorage.setItem("auth-token", res.data.token);
+        console.log(res.data.token);
+        navigation.navigate("Home");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
