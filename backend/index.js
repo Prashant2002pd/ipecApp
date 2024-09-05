@@ -7,6 +7,7 @@ const io = new Server(server);
 const routes = require("./routers/routes");
 const connect = require("./connection/db");
 const cors = require("cors");
+const { log } = require("node:console");
 
 app.use(cors());
 connect;
@@ -21,14 +22,21 @@ io.on("connection", (socket) => {
   // socket.broadcast.emit("live",{"mssg":`${socket.id} joined the server.`})
 
   // message event
-  socket.on("message",(data)=>{
-    console.log(data)
-    io.emit("receive-message",data)
-  })
-  // Group Messages
-  socket.on("join-room",(room)=>{
-    io.join(room)
-  })
+  socket.on("message", (data) => {
+    console.log(data);
+    io.emit("receive-message", data);
+  });
+  // Join Group
+  socket.on("join-room", (room) => {
+    socket.join(room);
+    console.log("user join the room", room);
+  });
+
+  //group message
+  socket.on("message-to-room", (data) => {
+    const { message, room } = data;
+    io.to(room).emit("receive-room-message", message);
+  });
 
   socket.on("disconnect", () => {
     console.log("user disconnected");
