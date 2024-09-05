@@ -1,19 +1,25 @@
-import React, { useEffect } from "react";
-import { View } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect } from 'react'
+import { Button, Text, View } from 'react-native'
+import { useSocket } from '../context/socketContext'
 
-const Home = ({ navigation }) => {
-  useEffect(() => {
-    async function gettoken() {
-      const token = await AsyncStorage.getItem("auth-token");
+const Home = ({navigation}) => {
+    const socket=useSocket()
+    useEffect(()=>{
+        socket.on("connect",()=>{
+            console.log("Connected",socket.id)
+            navigation.navigate("LiveChat")
+        })
+        return ()=>{
+        socket.disconnect();
+        }
+    },[])
+  return (
+    <View>
+        <Text>Home</Text>
+        <Button title="Go to LiveChat" onPress={()=>navigation.navigate("LiveChat")}/>
 
-      if (!token) {
-        navigation.navigate("Login");
-      }
-    }
-    gettoken();
-  }, []);
-  return <View></View>;
-};
+    </View>
+  )
+}
 
-export default Home;
+export default Home

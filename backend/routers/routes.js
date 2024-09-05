@@ -1,8 +1,6 @@
 const router = require('express').Router();
-const { Signup } = require('../controllers/Signup');
-const { Login } = require('../controllers/Login');
-const { Feed } = require('../controllers/Feed');
-const { NewTweet } = require('../controllers/NewTweet');
+const { Feed, NewTweet } = require('../controllers/Posts.controllers');
+const { Signup, Login } = require('../controllers/User.controllers');
 
 
 router.post('/signup', Signup);

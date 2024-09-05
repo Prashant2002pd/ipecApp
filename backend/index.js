@@ -16,6 +16,20 @@ app.use("/api", routes);
 
 io.on("connection", (socket) => {
   console.log("a user connected");
+
+  // socket.emit("live",{"mssg":"HWKKI"})
+  // socket.broadcast.emit("live",{"mssg":`${socket.id} joined the server.`})
+
+  // message event
+  socket.on("message",(data)=>{
+    console.log(data)
+    io.emit("receive-message",data)
+  })
+  // Group Messages
+  socket.on("join-room",(room)=>{
+    io.join(room)
+  })
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
   });
