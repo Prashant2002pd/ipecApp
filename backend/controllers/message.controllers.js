@@ -5,6 +5,7 @@ const ApiResponse = require("../utils/ApiResponse")
 const ApiError = require("../utils/ApiError")
 const Conversation = require("../models/conversationSchema")
 const Message = require("../models/messageSchema")
+const { getReceiverSocketID, io } = require("../socket/socket")
 
 const sendMessage=asyncHandler(async(req,res)=>{
     try {
@@ -34,6 +35,13 @@ const sendMessage=asyncHandler(async(req,res)=>{
         }
         // these both will run in parallel
         await Promise.all([conversation.save(),newMessage.save()])
+
+        // SOCKET IO
+        const receiverSocketId=getReceiverSocketID(receiverId)
+        if (receiverSocketId){
+            // io.to(<socket_id>).emit() is used to send events to specific client
+            io.to(receiverSocketId).emit('message',newMessage)
+        }
 
         res.status(201)
         .json(new ApiResponse(201,newMessage,"Message Sent"))
