@@ -10,10 +10,10 @@ const { getReceiverSocketID, io } = require("../socket/socket")
 const sendMessage=asyncHandler(async(req,res)=>{
     try {
         const {message}=req.body
-        const {id:receiverId}=req.paramas
+        const {id:receiverId}=req.params
         const senderId=req.user?._id
 
-        let conversation=await Conversation.find({
+        let conversation=await Conversation.findOne({
             participants:{
                 $all:[senderId,receiverId]
             }
@@ -58,7 +58,7 @@ const getMessage=asyncHandler(async(req,res)=>{
         
         const conversation=await Conversation.findOne({
             participants:{$all:[senderId,userToChatId]},
-        }).populate("messages");// NOT REFERENCE BUT ACTUAL MESSAGES
+        }).populate("message");// NOT REFERENCE BUT ACTUAL MESSAGES
 
         if (!conversation) throw new ApiError(400,"Conversation not found")
 
