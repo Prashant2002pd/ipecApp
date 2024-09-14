@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Button, Text, TextInput, View } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { io } from "socket.io-client";
-import {SOCKET_URL} from "@env"
-import { useSocket } from "../context/socketContext";
+// import AsyncStorage from "@react-native-async-storage/async-storage";
+// import { io } from "socket.io-client";
+// import {SOCKET_URL} from "@env"
+// import { useSocket } from "../context/socketContext";
 
 const LiveChat = ({ navigation }) => {
-  const socket=useSocket()
+  // const socket=useSocket()
   const [mssg,setMssg]=useState([])
 
-  useEffect(() => {
-    async function gettoken() {
-      const token = await AsyncStorage.getItem("auth-token");
+  // useEffect(() => {
+  //   async function gettoken() {
+  //     const token = await AsyncStorage.getItem("auth-token");
 
-      if (!token) {
-        navigation.navigate("Login");
-      }
-    }
-    gettoken();
-    socket.on("receive-message",(mssg)=>setMssg((prev)=>[...prev,mssg]))
-  }, []);
+  //     if (!token) {
+  //       navigation.navigate("Login");
+  //     }
+  //   }
+  //   gettoken();
+  //   socket.on("receive-message",(mssg)=>setMssg((prev)=>[...prev,mssg]))
+  // }, []);
 
   const [data, setData] = useState({
     message:""
@@ -30,7 +30,7 @@ const LiveChat = ({ navigation }) => {
   }
 
   function sendLive(){
-    socket.emit("message",data.message)
+    // socket.emit("message",data.message)
   }
 
 
@@ -41,7 +41,7 @@ const LiveChat = ({ navigation }) => {
         <Text key={index}>{data}</Text>
       )
     })}
-    <Button title="Go to Home" onPress={()=>navigation.navigate("Home")}></Button>
+    {/* <Button title="Go to Home" onPress={()=>navigation.navigate("Home")}></Button> */}
     </View>
     
     <View  style={{position:"absolute",bottom:5, width:350}}>
