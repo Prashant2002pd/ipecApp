@@ -1,4 +1,4 @@
-const express = required("express")
+const express = require("express")
 const { Server } = require("socket.io");
 const { createServer } = require("node:http");
 
@@ -13,9 +13,9 @@ const io = new Server(server, {
     }
 });
 
-const userSocketMap={}
+const userSocketMap = {}
 
-const getReceiverSocketID=(receiverId)=>{
+const getReceiverSocketID = (receiverId) => {
     return userSocketMap[receiverId]
 }
 
@@ -23,8 +23,8 @@ io.on("connection", (socket) => {
     console.log("a user connected", socket.io);
 
 
-    const userId=socket.handshake.query.userId;
-    if (userId!="undefined") userSocketMap[userId]=socket.id
+    const userId = socket.handshake.query.userId;
+    if (userId != "undefined") userSocketMap[userId] = socket.id
     // socket.emit("live",{"mssg":"HWKKI"})
     // socket.broadcast.emit("live",{"mssg":`${socket.id} joined the server.`})
 
@@ -50,4 +50,4 @@ io.on("connection", (socket) => {
     });
 });
 
-module.exports = { app, io, server ,getReceiverSocketID}
+module.exports = { app, io, server, getReceiverSocketID }
